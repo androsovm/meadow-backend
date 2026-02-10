@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tile Map Editor - The Meadow</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #1a1a2e;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
+      overflow: hidden;
+      height: 100vh;
+    }
+    #editor-container {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    #toolbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 20px;
+      background: #2d2d44;
+      border-bottom: 2px solid #4a4a6a;
+    }
+    #toolbar select, #toolbar button {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    #toolbar select {
+      background: #3d3d5c;
+      color: #fff;
+    }
+    #toolbar button {
+      background: #5a5a8a;
+      color: #fff;
+      transition: background 0.2s;
+    }
+    #toolbar button:hover {
+      background: #6a6a9a;
+    }
+    #toolbar button.active {
+      background: #7a7aba;
+    }
+    #main-area {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+    #map-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      background: #0d0d1a;
+    }
+    #palette-container {
+      width: 320px;
+      background: #252540;
+      border-left: 2px solid #4a4a6a;
+      display: flex;
+      flex-direction: column;
+    }
+    #palette-header {
+      padding: 12px;
+      background: #2d2d44;
+      font-weight: bold;
+      text-align: center;
+    }
+    #palette-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+    #statusbar {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 8px 20px;
+      background: #2d2d44;
+      border-top: 2px solid #4a4a6a;
+      font-size: 13px;
+    }
+    #statusbar .status-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #current-tile-preview {
+      width: 32px;
+      height: 32px;
+      border: 2px solid #5a5a8a;
+      image-rendering: pixelated;
+      background: #1a1a2e;
+    }
+    .tool-group {
+      display: flex;
+      gap: 4px;
+      margin-left: auto;
+    }
+    #file-input {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="editor-container">
+    <div id="toolbar">
+      <label>
+        Слой:
+        <select id="layer-select">
+          <option value="ground">Земля</option>
+          <option value="objects">Объекты</option>
+        </select>
+      </label>
+      <div class="tool-group">
+        <button id="brush-btn" class="active" title="Кисть (B)">Кисть</button>
+        <button id="eraser-btn" title="Ластик (E)">Ластик</button>
+        <button id="fill-btn" title="Заливка (G)">Заливка</button>
+      </div>
+      <div class="tool-group">
+        <button id="undo-btn" title="Отменить (Ctrl+Z)">↶ Undo</button>
+        <button id="redo-btn" title="Повторить (Ctrl+Y)">↷ Redo</button>
+      </div>
+      <button id="save-btn">Сохранить</button>
+      <button id="load-btn">Загрузить</button>
+      <input type="file" id="file-input" accept=".json">
+      <button id="clear-btn">Очистить слой</button>
+    </div>
+    <div id="main-area">
+      <div id="map-container"></div>
+      <div id="palette-container">
+        <div id="palette-header">Палитра тайлов</div>
+        <div id="palette-wrapper"></div>
+      </div>
+    </div>
+    <div id="statusbar">
+      <div class="status-item">
+        <span>Координаты:</span>
+        <span id="coords-display">X: 0, Y: 0</span>
+      </div>
+      <div class="status-item">
+        <span>Текущий тайл:</span>
+        <canvas id="current-tile-preview"></canvas>
+        <span id="current-tile-id">ID: 0</span>
+      </div>
+      <div class="status-item">
+        <span>Карта:</span>
+        <span id="map-size">100 x 100</span>
+      </div>
+      <div class="status-item">
+        <span>Зум:</span>
+        <span id="zoom-display">200%</span>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/src/editor/main.js"></script>
+</body>
+</html>
